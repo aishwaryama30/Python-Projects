@@ -1,0 +1,132 @@
+PYTHON MINI-PROJECT 
+    ISE-1
+                          TOPIC : "STORY-GENERATOR"
+      
+        BY:-
+              NAME          ROLL NO 
+            AISHWARYA M      06
+            ANISHA SHIVRAM   15
+            BHAVANA M S      29 
+
+
+
+#Story Generator
+import tkinter as tk
+from tkinter import messagebox
+from tkinter import font
+
+# Create the main window
+root = tk.Tk() # Tk() creates the root window
+root.geometry("800x1000")
+
+# create the title label
+title_label = tk.Label(root, text="Story Generator", font=("Arial", 25))
+title_label.pack(pady=30)
+
+# Create the Listbox widget to display the story titles
+story_titles = ["Thirsty Crow", "Fox and Crane", "Suspense"]
+listbox = tk.Listbox(root, font=("Arial", 20)) # To create a new listbox widget inside a root window
+for title in story_titles: # For loop
+    listbox.insert(tk.END, title)
+listbox.pack(pady=20) # The pack() fill option is used to make a widget fill the entire frame.
+
+
+# Create a button to select a story title
+def select_title():
+    # Get the index of the selected story title
+    index = listbox.curselection()[0] # returns a tuple starting from index 0
+    selected_title = story_titles[index]
+
+    # Create a new window for the input of words
+    input_window = tk.Toplevel(root) # A Toplevel widget is used to create a window on top of all other windows.
+    input_window.title("Enter Words")
+
+    # Create entry fields for each part of speech
+    if selected_title == "Thirsty Crow":
+
+        container_label = tk.Label(input_window, text="Enter a container :", font=("Arial", 20))
+        container_label.pack()
+        container_entry = tk.Entry(input_window)
+        container_entry.pack(pady=20)
+
+        adverb_label = tk.Label(input_window, text="Enter an adverb:", font=("Arial", 20))
+        adverb_label.pack()
+        adverb_entry = tk.Entry(input_window)
+        adverb_entry.pack(pady=20)
+
+    elif selected_title == "Fox and Crane":
+        adjective_label = tk.Label(input_window, text="Enter an adjective:", font=("Arial", 20))
+        adjective_label.pack()
+        adjective_entry = tk.Entry(input_window)
+        adjective_entry.pack(pady=20)
+
+        container_label = tk.Label(input_window, text="Enter a container:", font=("Arial", 20))
+        container_label.pack()
+        container_entry = tk.Entry(input_window)
+        container_entry.pack(pady=20)
+
+    elif selected_title == "Suspense":
+        noun_label = tk.Label(input_window, text="Enter a noun:", font=("Arial", 20))
+        noun_label.pack()
+        noun_entry = tk.Entry(input_window)
+        noun_entry.pack(pady=20)
+
+        verb_label = tk.Label(input_window, text="Enter a verb:", font=("Arial", 20))
+        verb_label.pack()
+        verb_entry = tk.Entry(input_window)
+        verb_entry.pack(pady=20)
+
+        adverb_label = tk.Label(input_window, text="Enter a adverb:", font=("Arial", 20))
+        adverb_label.pack()
+        adverb_entry = tk.Entry(input_window)
+        adverb_entry.pack(pady=20)
+
+        adjective_label = tk.Label(input_window, text="Enter an adjective:", font=("Arial", 20))
+        adjective_label.pack()
+        adjective_entry = tk.Entry(input_window)
+        adjective_entry.pack(pady=20)
+
+    # Create a button to generate the story
+    def generate_story():
+
+        # Create entry fields for each part of speech
+        if selected_title == "Thirsty Crow":
+            container = container_entry.get() # By using get(), if the value is not available then instead of giving error, None value is returned.
+            adverb = adverb_entry.get()
+
+            # Generate the story
+            story = f"{selected_title} is a story about a thirsty crow who finds a {container} with just a little bit of water at the bottom. The crow couldn't reach the water, but then has an idea. It starts dropping small stones into the {container} one by one. The water level starts rising, and soon the crow can drink from it {adverb}."
+            # By using "F-string", the string itself can be formatted in much the same way that you would with str.format().
+            messagebox.showinfo("Generated Story", story)
+
+        elif selected_title == "Fox and Crane":
+            container = container_entry.get()
+            adjective = adjective_entry.get()
+
+            # Generate the story
+            story = f"{selected_title} is a story about a {adjective} fox who invites a crane for dinner. The fox serves soup in a flat {container}, so he can easily slurp it up with his tongue. But the crane couldn't drink the soup because of it's long beak. Then the crane invited the fox over to its house and offered food in a jug with long-narrow neck. The fox feels embarrassed and realizes that he had been repaid for his behaviour with the crane."
+            messagebox.showinfo("Generated Story", story)
+
+        elif selected_title == "Suspense":
+            noun = noun_entry.get()
+            verb = verb_entry.get()
+            adverb = adverb_entry.get()
+            adjective = adjective_entry.get()
+
+            # Generate the story
+            story = f"{selected_title} is a {adjective} story about a {noun} who decides to {verb} {adverb}."
+            messagebox.showinfo("Generated Story", story)
+
+        # Close the input window
+        input_window.destroy()
+
+    generate_button = tk.Button(input_window, text="Generate Story", command=generate_story, font=("Arial", 25)) #Function call
+    generate_button.pack()
+
+
+generate_button = tk.Button(root, text="Select Story", command=select_title, font=("Arial", 25)) # Function call
+generate_button.pack()
+
+# Run the main loop
+root.mainloop() # Root. mainloop () is simply a method in the main window that executes what we wish to execute in an application.
+#As the name implies it will loop forever until the user exits the window or waits for any events from the user.

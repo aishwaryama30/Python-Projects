@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Quiz Generator</title>
+    <style>
+        /* Add your CSS styles here */
+        #quiz-container {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .question-box {
+            border: 2px solid #BBDEFB;
+            background-color: #bce6ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .option-box {
+            border: 2px solid #ffb0bc;
+            background-color: #FFFFFF;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .option-box.correct {
+            background-color: #57e85c;
+        }
+
+        .option-box.wrong {
+            background-color: #f94557;
+        }
+
+        #score {
+            font-weight: bold;
+            color: #ff710c;
+            font-size: larger;
+        }
+
+        /* Styling for the "Start Quiz" button */
+        #start-button {
+        background-color: #007bff; /* Blue background color */
+        color: #fff; /* White text color */
+        padding: 10px 20px; /* Padding around text */
+        font-size: 16px; /* Font size */
+        border: none; /* Remove border */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Cursor on hover */
+        transition: background-color 0.3s; /* Smooth background color transition */
+        }
+
+        #start-button:hover {
+        background-color: #ffadf8; /* Darker blue on hover */
+        color: #002aff;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <h1>Automated Quiz Generator</h1>
+        <div class="question-box" style="display: none;">
+            <p id="question-text">Loading question...</p>
+            <div id="options-list"></div>
+        </div>
+        <p id="score" style="display: none;"></p>
+        <button id="start-button" onclick="startQuiz()">Start Quiz</button>
+    </div>
+    <script>
+        // Define an array of quiz questions
+        const questions = [
+            {
+                question: "What is the purpose of the 'main' function in a C program?",
+                options: [
+                    "To declare variables",
+                    "To define constants",
+                    "To initialize the program",
+                    "To indicate the program's entry point"
+                ],
+                correctOption: 3,
+            },
+            {
+                question: "Which of the following is the correct syntax to declare an integer variable named 'num'?",
+                options: [
+                    "integer num;",
+                    "int num;",
+                    "declare num as integer;",
+                    "num = int;"
+                ],
+                correctOption: 1,
+            },
+            {
+                question: "In C, the statement 'scanf(\"%d\", &x);' is used for:",
+                options: [
+                    "Reading an integer value from the keyboard",
+                    "Displaying the value of integer 'x'",
+                    "Assigning an integer value to 'x'",
+                    "Performing integer division"
+                ],
+                correctOption: 0,
+            },
+            {
+                question: "What is the purpose of the 'if' statement in C?",
+                options: [
+                    "To define a loop",
+                    "To declare a function",
+                    "To perform arithmetic operations",
+                    "To implement conditional execution"
+                ],
+                correctOption: 3,
+            },
+            {
+                question: "Which data type is used to store single characters in C?",
+                options: [
+                    "char",
+                    "character",
+                    "str",
+                    "single"
+                ],
+                correctOption: 0,
+            },
+            {
+        question: "What is the purpose of a 'for' loop in C?",
+        options: [
+            "To define a function",
+            "To create an array",
+            "To implement conditional execution",
+            "To repeatedly execute a block of code"
+        ],
+        correctOption: 3,
+    },
+    {
+        question: "What is the syntax for declaring a constant in C?",
+        options: [
+            "const int x = 5;",
+            "int constant x = 5;",
+            "declare num as integer;",
+            "num = int;"
+        ],
+        correctOption: 0,
+    },
+    {
+        question: "Which operator is used for comparing two values in C?",
+        options: [
+            "==",
+            "!=",
+            ">=",
+            "&&"
+        ],
+        correctOption: 0,
+    },
+    {
+        question: "What is the purpose of the 'break' statement in a 'switch' case?",
+        options: [
+            "To skip the current iteration of a loop",
+            "To exit the current loop or switch case",
+            "To jump to a specific label in the code",
+            "To print a message and terminate the program"
+        ],
+        correctOption: 1,
+    },
+    {
+        question: "What is an 'array' in C?",
+        options: [
+            "A data type to store a single value",
+            "A collection of variables with the same name",
+            "A pointer to another variable",
+            "A type of loop"
+        ],
+        correctOption: 1,
+    },
+    {
+        question: "What is the purpose of the 'printf' function in C?",
+        options: [
+            "To read user input",
+            "To declare variables",
+            "To display output on the screen",
+            "To perform arithmetic operations"
+        ],
+        correctOption: 2,
+    },
+    {
+        question: "What does the 'sizeof' operator in C return?",
+        options: [
+            "The size of an array",
+            "The size of a variable in bytes",
+            "The size of a function",
+            "The size of a pointer"
+        ],
+        correctOption: 1,
+    },
+    {
+        question: "What is a 'function prototype' in C?",
+        options: [
+            "A declaration that specifies the return type and parameters of a function",
+            "A function that has no return type",
+            "A built-in function in C",
+            "A function with a single parameter"
+        ],
+        correctOption: 0,
+    },
+    {
+        question: "Which keyword is used to define a structure in C?",
+        options: [
+            "struct",
+            "define",
+            "typedef",
+            "class"
+        ],
+        correctOption: 0,
+    },
+    {
+        question: "What is 'recursion' in programming?",
+        options: [
+            "A type of loop",
+            "A function calling itself",
+            "A data type",
+            "A way to declare constants"
+        ],
+        correctOption: 1,
+    },
+    {
+        question: "What is the purpose of the 'include' directive in C?",
+        options: [
+            "To define a structure",
+            "To include a header file in the program",
+            "To perform arithmetic operations",
+            "To declare constants"
+        ],
+        correctOption: 1,
+    },
+    {
+        question: "What is the use of 'malloc' function in C?",
+        options: [
+            "To declare a variable",
+            "To allocate memory dynamically",
+            "To display output on the screen",
+            "To perform string operations"
+        ],
+        correctOption: 1,
+    },
+    {
+        question: "What is a 'pointer' in C?",
+        options: [
+            "A data type to store text",
+            "A variable that stores memory addresses",
+            "A type of loop",
+            "A way to declare constants"
+        ],
+        correctOption: 1,
+    },
+    {
+        question: "Which operator is used to access the value pointed to by a pointer in C?",
+        options: [
+            "->",
+            "&",
+            "*",
+            "|"
+        ],
+        correctOption: 2,
+    },
+    {
+        question: "What is the purpose of the 'while' loop in C?",
+        options: [
+            "To define a function",
+            "To create a switch case",
+            "To perform string operations",
+            "To repeatedly execute a block of code"
+        ],
+        correctOption: 3,
+    },
+            // Add more questions here...
+        ];
+
+        // DOM elements
+        const questionText = document.getElementById('question-text');
+        const optionsList = document.getElementById('options-list');
+        const scoreElement = document.getElementById('score');
+        const startButton = document.getElementById('start-button');
+
+        let currentQuestion = 0;
+        let userScore = 0;
+        const questionsPerPage = 5;
+        let questionsToDisplay = [];
+
+        function loadQuestionsToDisplay() {
+            questionsToDisplay = [];
+            while (questionsToDisplay.length < questionsPerPage) {
+                const randomIndex = Math.floor(Math.random() * questions.length);
+                const randomQuestion = questions[randomIndex];
+                if (!questionsToDisplay.includes(randomQuestion)) {
+                    questionsToDisplay.push(randomQuestion);
+                }
+            }
+        }
+
+        function loadQuestions() {
+            if (currentQuestion < questionsToDisplay.length) {
+                const q = questionsToDisplay[currentQuestion];
+                questionText.textContent = q.question;
+                optionsList.innerHTML = '';
+                q.options.forEach((option, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'option-box';
+                    div.textContent = option;
+                    div.addEventListener('click', () => handleOptionClick(index));
+                    optionsList.appendChild(div);
+                });
+            } else {
+                // Quiz is complete
+                questionText.textContent = 'Quiz Complete! Your Score: ' + userScore;
+                optionsList.innerHTML = '<button onclick="playAgain()">Play Again</button>';
+            }
+        }
+
+        function handleOptionClick(selectedOption) {
+            const q = questionsToDisplay[currentQuestion];
+            const optionBoxes = optionsList.querySelectorAll('.option-box');
+            optionBoxes.forEach(box => box.style.pointerEvents = 'none'); // Disable clicking on options
+
+            if (selectedOption === q.correctOption) {
+                optionBoxes[selectedOption].classList.add('correct');
+                userScore++;
+                scoreElement.textContent = `Score: ${userScore}/${questionsPerPage}`;
+            } else {
+                optionBoxes[selectedOption].classList.add('wrong');
+                optionBoxes[q.correctOption].classList.add('correct');
+            }
+
+            setTimeout(() => {
+                optionBoxes[selectedOption].classList.remove('wrong');
+                optionBoxes[q.correctOption].classList.remove('correct');
+                currentQuestion++;
+                if (currentQuestion < questionsToDisplay.length) {
+                    loadQuestions();
+                    optionBoxes.forEach(box => box.style.pointerEvents = 'auto'); // Re-enable clicking on options
+                } else {
+                    // Quiz is complete
+                    questionText.textContent = 'Quiz Complete! Your Score: ' + userScore;
+                    optionsList.innerHTML = '<button onclick="playAgain()">Play Again</button>';
+                }
+            }, 1000);
+        }
+
+        function playAgain() {
+            currentQuestion = 0;
+            userScore = 0;
+            scoreElement.textContent = `Score: ${userScore}/${questionsPerPage}`;
+            loadQuestionsToDisplay();
+            loadQuestions();
+        }
+
+        // Add event listener for the "Start Quiz" button
+        startButton.addEventListener('click', () => {
+            // Hide the "Start Quiz" button when the quiz starts
+            startButton.style.display = 'none';
+            
+            // Show the question box and score
+            const questionBox = document.querySelector('.question-box');
+            const scoreElement = document.getElementById('score');
+            questionBox.style.display = 'block';
+            scoreElement.style.display = 'block';
+
+            // Start the quiz by loading questions
+            loadQuestionsToDisplay();
+            loadQuestions();
+        });
+    </script>
+</body>
+</html>
+        
